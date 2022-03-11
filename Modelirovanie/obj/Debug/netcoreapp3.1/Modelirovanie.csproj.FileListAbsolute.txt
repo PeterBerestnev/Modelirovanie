@@ -1,0 +1,16 @@
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\bin\Debug\netcoreapp3.1\Modelirovanie.exe
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\bin\Debug\netcoreapp3.1\Modelirovanie.deps.json
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\bin\Debug\netcoreapp3.1\Modelirovanie.runtimeconfig.json
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\bin\Debug\netcoreapp3.1\Modelirovanie.runtimeconfig.dev.json
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\bin\Debug\netcoreapp3.1\Modelirovanie.dll
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\bin\Debug\netcoreapp3.1\Modelirovanie.pdb
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\obj\Debug\netcoreapp3.1\Modelirovanie.Form1.resources
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\obj\Debug\netcoreapp3.1\Modelirovanie.Properties.Resources.resources
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\obj\Debug\netcoreapp3.1\Modelirovanie.csproj.GenerateResource.cache
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\obj\Debug\netcoreapp3.1\Modelirovanie.AssemblyInfoInputs.cache
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\obj\Debug\netcoreapp3.1\Modelirovanie.AssemblyInfo.cs
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\obj\Debug\netcoreapp3.1\Modelirovanie.csproj.CoreCompileInputs.cache
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\obj\Debug\netcoreapp3.1\Modelirovanie.dll
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\obj\Debug\netcoreapp3.1\Modelirovanie.pdb
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\obj\Debug\netcoreapp3.1\Modelirovanie.genruntimeconfig.cache
+C:\Users\d.berestnev\source\repos\Modelirovanie\Modelirovanie\obj\Debug\netcoreapp3.1\Modelirovanie.csproj.AssemblyReference.cache
