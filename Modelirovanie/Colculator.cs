@@ -15,6 +15,8 @@ namespace Modelirovanie
         string stroka="";
         string finstroka = "";
         bool end = false;
+        int m = 0;
+        bool alreadyConverted = false;
         //Stack<char> ownStack = new Stack<char>();//стек реализовать самому
         Dictionary<string, string> FunctionMean = new Dictionary<string, string>();
         Dictionary<string, string> SymbolMean = new Dictionary<string, string>();
@@ -60,6 +62,10 @@ namespace Modelirovanie
                 StackIndex.Add(OperationStackAlphabit[k], k);
             }
         }
+        public bool isEnd()
+        {
+            return end;
+        }
         private bool isFunction(char a)
         {
             bool answ = false;
@@ -75,9 +81,23 @@ namespace Modelirovanie
             }
             return answ;
         }
-        public string getStroka(string strok)
+        public void resetAll()
+        {
+           finstroka="";
+           end = false;
+           alreadyConverted = false;
+        }
+        public string getStroka()
         {
             return finstroka;
+        }
+        public int getPntr()
+        {
+            return pntr;
+        }
+        public char PeekStack()
+        {
+            return ownStack.Peek(pntr); ;
         }
         private char PoP()
         {
@@ -92,13 +112,14 @@ namespace Modelirovanie
                 ownStack.Push(pntr, symb);
             
         }
-        public void Enumeration(string strok)
+        public void Enumeration(string strok, bool step)
         {
+            if(end)
             finstroka = "";
             int strokInd = 0;
             int stackInd = 0;
+            if(!alreadyConverted)
             convertation(strok);
-            int m = 0;
             while (!end)
             {
                 strokInd = StrokIndex[tempString[m]];
@@ -135,12 +156,17 @@ namespace Modelirovanie
                         end = true;
                         pntr = -1;
                         stroka = "";
+                        m = 0;
+                        alreadyConverted = true;
+                        //finstroka = "";
                         break;
                     case 5:
                         finstroka = "Ошибка скобочной структуры";
                         end = true;
                         pntr = -1;
                         stroka = "";
+                        m = 0;
+                        alreadyConverted = true;
                         break;
                     case 6:
                         finstroka += stroka[m];
@@ -151,7 +177,13 @@ namespace Modelirovanie
                         end = true;
                         pntr = -1;
                         stroka = "";
+                        m = 0;
+                        alreadyConverted = true;
                         break;
+                }
+                if (step)
+                {
+                    break;
                 }
             }
         }
@@ -179,7 +211,6 @@ namespace Modelirovanie
                     if (strok[i] == '\0' && strok[i - 1] != ')')
                     {
                         stroka += alphabit[num2];
-                        num2++;
                     }
                     stroka += strok[i];
                     
@@ -232,6 +263,7 @@ namespace Modelirovanie
                     b++;
                 }
             }
+            alreadyConverted = true;
         }
     }
 }

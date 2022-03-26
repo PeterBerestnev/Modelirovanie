@@ -1858,54 +1858,60 @@ namespace Modelirovanie
             // label25
             // 
             this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label25.Location = new System.Drawing.Point(6, 433);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(20, 15);
+            this.label25.Size = new System.Drawing.Size(27, 21);
             this.label25.TabIndex = 29;
             this.label25.Text = "->";
             // 
             // label24
             // 
             this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label24.Location = new System.Drawing.Point(6, 404);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(20, 15);
+            this.label24.Size = new System.Drawing.Size(27, 21);
             this.label24.TabIndex = 28;
             this.label24.Text = "->";
             // 
             // label23
             // 
             this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label23.Location = new System.Drawing.Point(6, 375);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(20, 15);
+            this.label23.Size = new System.Drawing.Size(27, 21);
             this.label23.TabIndex = 27;
             this.label23.Text = "->";
             // 
             // label22
             // 
             this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label22.Location = new System.Drawing.Point(7, 343);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(20, 15);
+            this.label22.Size = new System.Drawing.Size(27, 21);
             this.label22.TabIndex = 26;
             this.label22.Text = "->";
             // 
             // label21
             // 
             this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label21.Location = new System.Drawing.Point(7, 317);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(20, 15);
+            this.label21.Size = new System.Drawing.Size(27, 21);
             this.label21.TabIndex = 25;
             this.label21.Text = "->";
             // 
             // label20
             // 
             this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label20.Location = new System.Drawing.Point(7, 288);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(20, 15);
+            this.label20.Size = new System.Drawing.Size(27, 21);
             this.label20.TabIndex = 24;
             this.label20.Text = "->";
             // 
@@ -1954,81 +1960,91 @@ namespace Modelirovanie
             // label19
             // 
             this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label19.Location = new System.Drawing.Point(6, 264);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(20, 15);
+            this.label19.Size = new System.Drawing.Size(27, 21);
             this.label19.TabIndex = 17;
             this.label19.Text = "->";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label18.Location = new System.Drawing.Point(6, 235);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(20, 15);
+            this.label18.Size = new System.Drawing.Size(27, 21);
             this.label18.TabIndex = 16;
             this.label18.Text = "->";
             // 
             // label17
             // 
             this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label17.Location = new System.Drawing.Point(7, 201);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(20, 15);
+            this.label17.Size = new System.Drawing.Size(27, 21);
             this.label17.TabIndex = 15;
             this.label17.Text = "->";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label16.Location = new System.Drawing.Point(7, 172);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(20, 15);
+            this.label16.Size = new System.Drawing.Size(27, 21);
             this.label16.TabIndex = 14;
             this.label16.Text = "->";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label15.Location = new System.Drawing.Point(7, 143);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(20, 15);
+            this.label15.Size = new System.Drawing.Size(27, 21);
             this.label15.TabIndex = 13;
             this.label15.Text = "->";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label14.Location = new System.Drawing.Point(7, 114);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(20, 15);
+            this.label14.Size = new System.Drawing.Size(27, 21);
             this.label14.TabIndex = 12;
             this.label14.Text = "->";
             // 
             // label13
             // 
             this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label13.Location = new System.Drawing.Point(6, 85);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(20, 15);
+            this.label13.Size = new System.Drawing.Size(27, 21);
             this.label13.TabIndex = 11;
             this.label13.Text = "->";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label12.Location = new System.Drawing.Point(7, 53);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(20, 15);
+            this.label12.Size = new System.Drawing.Size(27, 21);
             this.label12.TabIndex = 10;
             this.label12.Text = "->";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label11.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label11.Location = new System.Drawing.Point(7, 26);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(20, 15);
+            this.label11.Size = new System.Drawing.Size(27, 21);
             this.label11.TabIndex = 9;
             this.label11.Text = "->";
             // 
