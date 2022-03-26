@@ -27,10 +27,10 @@ namespace Modelirovanie
         private void button22_Click(object sender, EventArgs e)//ввод
         {
             if (checkBox1.Checked) 
-                calc.Enumeration(textBox1.Text,false);//
+                calc.Enumeration(textBox1.Text);//
             else
-                calc.Enumeration(textBox1.Text, true);
-            textBox3.Text = calc.getStroka();
+                calc.Enumeration(textBox1.Text);
+            textBox3.Text = calc.getStroka(textBox1.Text);
         }
 
         private void textBox4_TextChanged(object sender, EventArgs e)
@@ -54,5 +54,6 @@ namespace Modelirovanie
         {
 
         }
+
     }
 }

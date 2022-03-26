@@ -12,20 +12,31 @@ namespace Modelirovanie
         Dictionary<char, int> VariableMean = new Dictionary<char, int>();
         int num = 10;//Multiplayer
         int num2 = 0;//alphabit position
-        string stroka;
+        string stroka="";
         string finstroka = "";
+        bool end = false;
         //Stack<char> ownStack = new Stack<char>();//стек реализовать самому
         Dictionary<string, string> FunctionMean = new Dictionary<string, string>();
         Dictionary<string, string> SymbolMean = new Dictionary<string, string>();
+        Dictionary<char, int> StrokIndex = new Dictionary<char, int>();
+        Dictionary<char, int> StackIndex = new Dictionary<char, int>();
+        char[] OperationStrokaAlphabit = { '\0', '+', '-', '*', '/', '^', '(', ')', 'F', 'P' };
+        char[] OperationStackAlphabit = { '\0', '+', '-', '*', '/', '^', '(','F'};
         string[] functionString = { "arcsin", "ctg", "sin", "tg" };//эти массивы связаны, должны быть равны по длине и не иметь повторяющихся элементов
         string[] functionChar = { "A", "C", "S", "T" };
         char[] alphabit = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z' };
-        static int lnth=15;
-        int pntr = 0;
-        int m = 0;
-        bool oprt = true;
-        bool firstOper = true;// переменная для определения конца первой переменной в пошаговом режиме
+        static int lnth = 15;
+        int pntr = -1;
+        string tempString = "";
         MyOwnStak ownStack = new MyOwnStak(lnth);
+        int[,] table = new int[8, 10] {  {4,1,1,1,1,1,1,5,1,6 },
+                                         {2,2,2,1,1,1,1,2,1,6 },
+                                         {2,2,2,1,1,1,1,2,1,6 }, 
+                                         {2,2,2,2,2,1,1,2,1,6 }, 
+                                         {2,2,2,2,2,1,1,2,1,6 }, 
+                                         {2,2,2,2,2,2,1,2,1,6 },
+                                         {5,1,1,1,1,1,1,3,1,6 }, 
+                                         {2,2,2,2,2,2,1,2,7,6 }};
         public Colculator()
         {
             for (int k = 0; k < alphabit.Length; k++)
@@ -40,37 +51,113 @@ namespace Modelirovanie
             {
                 SymbolMean.Add(functionChar[k], functionString[k]);
             }
-
+            for (int k = 0; k < OperationStrokaAlphabit.Length; k++)
+            {
+                StrokIndex.Add(OperationStrokaAlphabit[k], k);
+            }
+            for (int k = 0; k < OperationStackAlphabit.Length; k++)
+            {
+                StackIndex.Add(OperationStackAlphabit[k], k);
+            }
         }
-        public void deleteSpaceBars()
+        private bool isFunction(char a)
         {
-            stroka = stroka.Trim();
+            bool answ = false;
+            int p = 0;
+            while (p < functionChar.Length)
+            {
+                if (a == functionChar[p][0])
+                {
+                    answ = true;
+                    break;
+                }
+                p++;
+            }
+            return answ;
         }
-        public string getStroka()
+        public string getStroka(string strok)
         {
             return finstroka;
         }
         private char PoP()
         {
             char temp = ownStack.Peek(pntr);
-            pntr -=1;
+            pntr -= 1;
             return temp;
         }
         private void PusH(char symb)
         {
-           if(pntr==0 && ownStack.Peek(pntr)=='\n')
-            {
-                ownStack.Push(pntr,symb);
-            }
-            else
-            {
+            
                 pntr += 1;
                 ownStack.Push(pntr, symb);
+            
+        }
+        public void Enumeration(string strok)
+        {
+            finstroka = "";
+            int strokInd = 0;
+            int stackInd = 0;
+            convertation(strok);
+            int m = 0;
+            while (!end)
+            {
+                strokInd = StrokIndex[tempString[m]];
+                if (isFunction(ownStack.Peek(pntr))){
+                    stackInd = StackIndex['F'];
+                }
+                else
+                    stackInd = StackIndex[ownStack.Peek(pntr)];
+                switch (table[stackInd, strokInd])
+                {
+                    case 1:
+                        PusH(stroka[m]);
+                        m++;
+                        break;
+                    case 2:
+                        finstroka+= PoP();
+                        break;
+                    case 3:
+                        while(ownStack.Peek(pntr)!='(')
+                        {
+                            finstroka += PoP();
+                        }
+                        PoP();
+                        m++;
+                        break;
+                    case 4:
+                        foreach (KeyValuePair<string, string> kvp in FunctionMean)
+                        {
+                            if (finstroka.Contains(kvp.Value))
+                            {
+                                finstroka = finstroka.Replace(kvp.Value, kvp.Key.ToUpper());
+                            }
+                        }
+                        end = true;
+                        pntr = -1;
+                        stroka = "";
+                        break;
+                    case 5:
+                        finstroka = "Ошибка скобочной структуры";
+                        end = true;
+                        pntr = -1;
+                        stroka = "";
+                        break;
+                    case 6:
+                        finstroka += stroka[m];
+                        m++;
+                        break;
+                    case 7:
+                        finstroka = "Ошибка скобочной структуры";
+                        end = true;
+                        pntr = -1;
+                        stroka = "";
+                        break;
+                }
             }
         }
-        public void Enumeration(string strok, bool stepOrAll)
+        public void convertation(string strok)
         {
-
+            bool isFunc = false;
             foreach (KeyValuePair<string, string> kvp in FunctionMean)
             {
                 if (strok.Contains(kvp.Key))
@@ -78,616 +165,73 @@ namespace Modelirovanie
                     strok = strok.Replace(kvp.Key, kvp.Value);
                 }
             }
-            stroka = strok;
-            stroka += '\0';
-            deleteSpaceBars();
-            
-            //лишний символ появляется из-за обработки f(x) в  default
-            if (!stepOrAll)
+            strok += '\0';
+            for (int i = 0; i < strok.Length; i++)
             {
-                if (stroka.Length > 1)
-                    for (int i = 0; i < stroka.Length; i++)
-                    {
-                        step(i);
-                    }
-            }
-            else
-            {
-                if (m < stroka.Length)
+                isFunc = false;
+                if (strok[i] == '+' || strok[i] == '-' || strok[i] == '*' || strok[i] == '/' || strok[i] == '^' || strok[i] == '(' || strok[i] == ')' || strok[i] == '\0')
                 {
-                   firstOper = true;
-                 //  while (firstOper)
-                  // {
-                        step(m);
-                        m++;
-                  // }
+                    if (strok[i] != '(' && strok[i] != '\0' && strok[i - 1] != ')')
+                    {
+                        stroka += alphabit[num2];
+                        num2++;
+                    }
+                    if (strok[i] == '\0' && strok[i - 1] != ')')
+                    {
+                        stroka += alphabit[num2];
+                        num2++;
+                    }
+                    stroka += strok[i];
+                    
                 }
-            }
-        }
-        public void step(int i)
-        {
-            switch (stroka[i])
-            {
-                case '+':
-                    if (oprt == false)
-                    {
-                        finstroka += alphabit[num2];
-                        num2++;
-                    }
-                    oprt = true;
-                    firstOper = false;
-                    if (ownStack.Peek(pntr) != '\n')
-                        switch (ownStack.Peek(pntr))
-                        {
-                            case '+':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '-':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '*':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '/':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '^':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '(':
-                                PusH(stroka[i]);
-                                break;
-                            default:
-                                char z = PoP();
-                                int p = 0;
-                                while (p < functionChar.Length)
-                                {//есть идея о проверке символа на букву, после чего
-                                    if (z == functionChar[p][0])
-                                    {
-                                        string h = "" + z;
-                                        for (int y = 0; y < functionChar.Length; y++)
-                                        {
-                                            if (SymbolMean[h] == functionString[y])
-                                                finstroka = finstroka + functionString[y].ToUpper();
-
-                                        }
-
-                                        p = functionChar.Length;
-                                        PusH(stroka[i]);
-                                        char q = ownStack.Peek(pntr);
-                                    }
-                                    p++;
-                                }
-                                break;
-                        }
-                    else
-                    {
-                        PusH(stroka[i]);
-                    }
-
-
-                    break;
-                case '-':
-                    if (oprt == false)
-                    {
-                        finstroka += alphabit[num2];
-                        num2++;
-                    }
-                    oprt = true;
-                    firstOper = false;
-                    if (ownStack.Peek(pntr) != '\n')
-                        switch (ownStack.Peek(pntr))
-                        {
-                            case '+':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '-':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '*':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '/':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '^':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '(':
-                                PusH(stroka[i]);
-                                break;
-                            default:
-                                char z = PoP();
-                                int p = 0;
-                                while (p < functionChar.Length)
-                                {//есть идея о проверке символа на букву, после чего
-                                    if (z == functionChar[p][0])
-                                    {
-                                        string h = "" + z;
-                                        for (int y = 0; y < functionChar.Length; y++)
-                                        {
-                                            if (SymbolMean[h] == functionString[y])
-                                                finstroka = finstroka + functionString[y].ToUpper();
-
-                                        }
-
-                                        p = functionChar.Length;
-                                    }
-                                    p++;
-                                }
-                                break;
-                        }
-                    else
-                    {
-                        PusH(stroka[i]);
-                    }
-                    break;
-                case '*':
-                    if (oprt == false)
-                    {
-                        finstroka += alphabit[num2];
-                        num2++;
-                    }
-                    oprt = true;
-                    firstOper = false;
-                    if (ownStack.Peek(pntr) != '\n')
-                        switch (ownStack.Peek(pntr))
-                        {
-                            case '+':
-                                PusH(stroka[i]);
-                                break;
-                            case '-':
-                                PusH(stroka[i]);
-                                break;
-                            case '*':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '/':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '^':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '(':
-                                PusH(stroka[i]);
-                                break;
-                            default:
-                                char z = PoP();
-                                int p = 0;
-                                while (p < functionChar.Length)
-                                {//есть идея о проверке символа на букву, после чего
-                                    if (z == functionChar[p][0])
-                                    {
-                                        string h = "" + z;
-                                        for (int y = 0; y < functionChar.Length; y++)
-                                        {
-                                            if (SymbolMean[h] == functionString[y])
-                                                finstroka = finstroka + functionString[y].ToUpper();
-
-                                        }
-
-                                        p = functionChar.Length;
-                                    }
-                                    p++;
-                                }
-                                break;
-                        }
-                    else
-                    {
-                        PusH(stroka[i]);
-                        char ok = ownStack.Peek(pntr);
-                    }
-                    break;
-                case '/':
-                    if (oprt == false)
-                    {
-                        finstroka += alphabit[num2];
-                        num2++;
-                    }
-                    oprt = true;
-                    firstOper = false;
-                    if (ownStack.Peek(pntr) != '\n')
-                        switch (ownStack.Peek(pntr))
-                        {
-                            case '+':
-                                PusH(stroka[i]);
-                                break;
-                            case '-':
-                                PusH(stroka[i]);
-                                break;
-                            case '*':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '/':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '^':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '(':
-                                PusH(stroka[i]);
-                                break;
-                            default:
-                                char z = PoP();
-                                int p = 0;
-                                while (p < functionChar.Length)
-                                {//есть идея о проверке символа на букву, после чего
-                                    if (z == functionChar[p][0])
-                                    {
-                                        string h = "" + z;
-                                        for (int y = 0; y < functionChar.Length; y++)
-                                        {
-                                            if (SymbolMean[h] == functionString[y])
-                                                finstroka = finstroka + functionString[y].ToUpper();
-
-                                        }
-
-                                        p = functionChar.Length;
-                                    }
-                                    p++;
-                                }
-                                break;
-                        }
-                    else
-                    {
-                        PusH(stroka[i]);
-                    }
-                    break;
-                case '^':
-                    if (oprt == false)
-                    {
-                        finstroka += alphabit[num2];
-                        num2++;
-                    }
-                    oprt = true;
-                    firstOper = false;
-                    if (ownStack.Peek(pntr) != '\n')
-                        switch (ownStack.Peek(pntr))
-                        {
-                            case '+':
-                                PusH(stroka[i]);
-                                break;
-                            case '-':
-                                PusH(stroka[i]);
-                                break;
-                            case '*':
-                                PusH(stroka[i]);
-                                break;
-
-                            case '/':
-                                PusH(stroka[i]);
-                                break;
-                            case '^':
-                                finstroka = finstroka + PoP();
-                                if (ownStack.Peek(pntr) == '\n' || ownStack.Peek(pntr) == '(')//вопрос по взаимодействию со скобками. Надо разобраться!
-                                    PusH(stroka[i]);
-                                break;
-                            case '(':
-                                PusH(stroka[i]);
-                                break;
-                            default:
-                                char z = PoP();
-                                int p = 0;
-                                while (p < functionChar.Length)
-                                {//есть идея о проверке символа на букву, после чего
-                                    if (z == functionChar[p][0])
-                                    {
-                                        string h = "" + z;
-                                        for (int y = 0; y < functionChar.Length; y++)
-                                        {
-                                            if (SymbolMean[h] == functionString[y])
-                                                finstroka = finstroka + functionString[y].ToUpper();
-
-                                        }
-
-                                        p = functionChar.Length;
-                                    }
-                                    p++;
-                                }
-                                break;
-                        }
-                    else
-                    {
-                        PusH(stroka[i]);
-                    }
-                    break;
-                case '(':
-                    if (oprt == false)
-                    {
-                        finstroka += alphabit[num2];
-                        num2++;
-                    }
-                    oprt = true;
-                    firstOper = false;
-                    if (ownStack.Peek(pntr) != '\n')
-                        switch (ownStack.Peek(pntr))
-                        {
-                            case '+':
-                                PusH(stroka[i]);
-                                break;
-                            case '-':
-                                PusH(stroka[i]);
-                                break;
-                            case '*':
-                                PusH(stroka[i]);
-                                break;
-                            case '/':
-                                PusH(stroka[i]);
-                                break;
-                            case '^':
-                                PusH(stroka[i]);
-                                break;
-                            case '(':
-                                PusH(stroka[i]);
-                                break;
-                            default:
-                                char z = ownStack.Peek(pntr);
-                                int p = 0;
-                                while (p < functionChar.Length)
-                                {//есть идея о проверке символа на букву, после чего
-                                    if (z == functionChar[p][0])
-                                    {
-                                        PusH(stroka[i]);
-                                        p = functionChar.Length;
-                                    }
-                                    p++;
-                                }
-                                break;
-                        }
-                    else
-                    {
-                        PusH(stroka[i]);
-                    }
-                    break;
-                case ')':
-                    if (oprt == false)
-                    {
-                        finstroka += alphabit[num2];
-                        num2++;
-                    }
-                    oprt = true;
-                    firstOper = false;
-                    if (ownStack.Peek(pntr) != '\n')
-                        switch (ownStack.Peek(pntr))
-                        {
-                            case '+':
-                                //пока стек не будет равен 0 (но в таком случае нужна ошибка) или пока символ стека не будет равен "(" (но его мы в строку не отпрвляем)
-                                while (ownStack.Peek(pntr) != '(')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                }
-                                PoP();
-                                break;
-                            case '-':
-                                while (ownStack.Peek(pntr) != '(')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                }
-                                PoP();
-                                break;
-                            case '*':
-                                while (ownStack.Peek(pntr) != '(')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                }
-                                PoP();
-                                break;
-                            case '/':
-                                while (ownStack.Peek(pntr) != '(')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                }
-                                PoP();
-                                break;
-                            case '^':
-                                while (ownStack.Peek(pntr) != '(')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                }
-                                PoP();
-                                break;
-                            case '(':
-                                PoP();
-                                break;
-                            default:
-                                //Ошибка скобочной структуры
-                                break;
-                        }
-                    else
-                    {
-                        //ошибка скобочной структуры
-                    }
-                    break;
-                case '\0':
-                    firstOper = false;
-                    if (ownStack.Peek(pntr) != '\n')
-                        switch (ownStack.Peek(pntr))
-                        {
-                            case '+':
-                                finstroka += alphabit[num2];
-                                finstroka = finstroka + PoP();
-
-
-                                while (ownStack.Peek(pntr) != '\n')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                    else
-                                        PoP();
-                                }
-
-                                break;
-                            case '-':
-                                finstroka += alphabit[num2];
-                                finstroka = finstroka + PoP();
-                                while (ownStack.Peek(pntr) != '\n')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                    else
-                                        PoP();
-                                }
-                                break;
-                            case '*':
-                                finstroka += alphabit[num2];
-                                finstroka = finstroka + PoP();
-                                while (ownStack.Peek(pntr) != '\n')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                    else
-                                        PoP();
-                                }
-                                break;
-                            case '/':
-                                finstroka += alphabit[num2];
-                                finstroka = finstroka + PoP();
-                                while (ownStack.Peek(pntr) != '\n')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                    else
-                                        PoP();
-                                }
-                                break;
-                            case '^':
-                                finstroka += alphabit[num2];
-                                finstroka = finstroka + PoP();
-                                while (ownStack.Peek(pntr) != '\n')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                    else
-                                        PoP();
-                                }
-                                break;
-                            case '('://ТУТ ПРОБЛЕМА 
-                                     //надо найти строчку с закрывающей скобкой и удалятьпри ней из стека открывающую
-                                PoP();
-                                finstroka = finstroka + PoP();
-                                while (ownStack.Peek(pntr) != '\n')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                    else
-                                        PoP();
-                                }
-                                //Пробное решение
-                                break;
-                            default:
-                                //ТУТ ОШИБКА
-                                char z = PoP();
-                                int p = 0;
-                                while (p < functionChar.Length)
-                                {//есть идея о проверке символа на букву, после чего
-                                    if (z == functionChar[p][0])
-                                    {
-                                        string h = "" + z;
-                                        for (int y = 0; y < functionChar.Length; y++)
-                                        {
-                                            if (SymbolMean[h] == functionString[y])
-                                                finstroka = finstroka + functionString[y].ToUpper();
-
-                                        }
-
-                                        p = functionChar.Length;
-                                    }
-                                    p++;
-                                }
-
-                                while (ownStack.Peek(pntr) != '\n')
-                                {
-                                    if (ownStack.Peek(pntr) != '(')
-                                        finstroka = finstroka + PoP();
-                                    else
-                                        PoP();
-                                }
-
-                                break;
-                        }
-                    else
-                    {
-                        stroka = "";
-                        finstroka = "";
-                        pntr = 0;
-                        ownStack.clearStack();
-                        this.m = 0;
-                    }
-
-                    break;
-                default:
-                    firstOper = true;    
-                    oprt = false;
+                else
+                {
                     int j = 0;
                     while (j < functionChar.Length)
                     {
-                        char b = functionChar[j][0];
-                        if (stroka[i] == b)
+                        if (strok[i] == functionChar[j][0])
                         {
-                            PusH(stroka[i]);
-                            j = functionChar.Length;
-                            oprt = true;
-                            firstOper = false;
-                            //else ошибка скобочной структуры
+                            stroka += strok[i];
+                            isFunc = true;
+                            break;
                         }
                         j++;
                     }
-
-                    //Здесь надо совершать проверку на функцию, в противном случае считать переменной
-                    if (oprt == false)
+                    if (!isFunc)
                     {
-                        //здесь надо перенести данные из словаря в выходную строку
-                        // или поместить букву замены в конечную строку
                         if (VariableMean[alphabit[num2]] == 0)
                         {
-                            VariableMean[alphabit[num2]] += (int)stroka[i];
+                            VariableMean[alphabit[num2]] += (int)strok[i];
                         }
                         else
                         {
-                            VariableMean[alphabit[num2]] = (VariableMean[alphabit[num2]] * num) + (int)stroka[i];
+                            VariableMean[alphabit[num2]] = (VariableMean[alphabit[num2]] * num) + (int)strok[i];
                         }
                     }
 
-                    break;
+                }
             }
-
+            tempString = stroka;
+            foreach (KeyValuePair<string, string> kvp in FunctionMean)
+            {
+                if (tempString.Contains(kvp.Value))
+                {
+                    tempString = tempString.Replace(kvp.Value, "F");
+                }
+            }
+            for(int p = 0; p < tempString.Length; p++)
+            {
+                int b = 0;
+                while (b < alphabit.Length)
+                {
+                    if (tempString[p] == alphabit[b])
+                    {
+                        tempString = tempString.Replace(tempString[p],'P');
+                        break;
+                    }
+                    b++;
+                }
+            }
         }
     }
 }

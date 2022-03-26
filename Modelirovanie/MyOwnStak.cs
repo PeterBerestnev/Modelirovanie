@@ -15,7 +15,7 @@ namespace Modelirovanie
             int i = 0;
             while (i <= count)
             {
-                list.Add('\n');
+                list.Add('\0');
                 i++;
             }
         }
@@ -35,7 +35,7 @@ namespace Modelirovanie
             int i = 0;
             while (i <= count)
             {
-                list.Add('\n');
+                list.Add('\0');
                 i++;
             }
         }
