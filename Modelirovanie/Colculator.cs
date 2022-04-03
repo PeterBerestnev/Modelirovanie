@@ -146,6 +146,7 @@ namespace Modelirovanie
                         m++;
                         break;
                     case 4:
+                        //Баг, надо подправить (при замене имен функций одна и та же может замениться несколько раз)
                         foreach (KeyValuePair<string, string> kvp in FunctionMean)
                         {
                             if (finstroka.Contains(kvp.Value))

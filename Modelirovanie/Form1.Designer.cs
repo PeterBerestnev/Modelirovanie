@@ -660,7 +660,7 @@ namespace Modelirovanie
             this.textBox82.ReadOnly = true;
             this.textBox82.Size = new System.Drawing.Size(23, 23);
             this.textBox82.TabIndex = 96;
-            this.textBox82.Text = "7";
+            this.textBox82.Text = "2";
             this.textBox82.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox83
