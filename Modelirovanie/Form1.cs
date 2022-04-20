@@ -18,7 +18,6 @@ namespace Modelirovanie
         public Form1()
         {
             InitializeComponent();
-            //textBox1.Text = template;
         }
         private void valueButton_Click(object sender, EventArgs e) {
             Button numberButton = (Button)sender;
@@ -48,7 +47,7 @@ namespace Modelirovanie
             {
                 if (!calc.isEnd())
                 {
-                    calc.Enumeration(textBox1.Text, true);//
+                    calc.GeneralForm(textBox1.Text, true);//
                     switch (calc.getPntr())
                     {
                         case 0:
@@ -135,16 +134,14 @@ namespace Modelirovanie
             }
             else
             {
-                calc.Enumeration(textBox1.Text, false);
+                
+                calc.GeneralForm(textBox1.Text, false);
                 button22.Enabled = false;
             }
             textBox3.Text = calc.getStroka();
         }
 
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
 
-        }
 
         private void button23_Click(object sender, EventArgs e)
         {
@@ -161,10 +158,20 @@ namespace Modelirovanie
            
         }
 
-        private void groupBox5_Enter(object sender, EventArgs e)
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
 
         }
 
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            string[] variables = { textBox118.Text, textBox119.Text, textBox120.Text, textBox121.Text, textBox122.Text, textBox123.Text, textBox124.Text, textBox125.Text, textBox126.Text, textBox127.Text };
+            textBox117.Text = calc.getResult(variables);
+        }
     }
 }

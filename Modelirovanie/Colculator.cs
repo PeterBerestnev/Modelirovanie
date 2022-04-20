@@ -9,9 +9,7 @@ namespace Modelirovanie
     {
         //Сделать стэк из ListBox  создать n кол-во элементов, заполнять с конца, данные не стираются, просто смещается указатель (аналог модели оперативной памяти)
         //или из массива
-        Dictionary<char, int> VariableMean = new Dictionary<char, int>();
-        int num = 10;//Multiplayer
-        int num2 = 0;//alphabit position
+        Dictionary<char, decimal> VariableMean = new Dictionary<char, decimal>();
         string stroka="";
         string finstroka = "";
         bool end = false;
@@ -19,14 +17,17 @@ namespace Modelirovanie
         bool alreadyConverted = false;
         //Stack<char> ownStack = new Stack<char>();//стек реализовать самому
         Dictionary<string, string> FunctionMean = new Dictionary<string, string>();
+       // Dictionary<string, string> AFunctionMean = new Dictionary<string, string>();
         Dictionary<string, string> SymbolMean = new Dictionary<string, string>();
         Dictionary<char, int> StrokIndex = new Dictionary<char, int>();
         Dictionary<char, int> StackIndex = new Dictionary<char, int>();
         char[] OperationStrokaAlphabit = { '\0', '+', '-', '*', '/', '^', '(', ')', 'F', 'P' };
         char[] OperationStackAlphabit = { '\0', '+', '-', '*', '/', '^', '(','F'};
         string[] functionString = { "arcsin", "ctg", "sin", "tg" };//эти массивы связаны, должны быть равны по длине и не иметь повторяющихся элементов
+       // string[] AfunctionString = { "sin", "tg", "arcsin", "ctg" };
         string[] functionChar = { "A", "C", "S", "T" };
-        char[] alphabit = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z' };
+        //string[] AfunctionChar = { "S", "T", "A", "C" };
+        char[] alphabit = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
         static int lnth = 15;
         int pntr = -1;
         string tempString = "";
@@ -61,11 +62,18 @@ namespace Modelirovanie
             {
                 StackIndex.Add(OperationStackAlphabit[k], k);
             }
+
         }
         public bool isEnd()
         {
             return end;
         }
+        public string getResult(string[] var)
+        {
+
+            return Result(var);
+        }
+
         private bool isFunction(char a)
         {
             bool answ = false;
@@ -112,7 +120,137 @@ namespace Modelirovanie
                 ownStack.Push(pntr, symb);
             
         }
-        public void Enumeration(string strok, bool step)
+
+        public double sin(double var)
+        {
+
+            return 0;
+        }
+        public double arcsin(int var)
+        {
+            return 0;
+        }
+        public double tg(int var)
+        {
+            return 0;
+        }
+        public double arctg(int var)
+        {
+            return 0;
+        }
+        public string Result(string[] var)
+        {
+            for(int y=0; y < var.Length; y++)
+            {
+                decimal.TryParse(var[y], out decimal value);
+                VariableMean[alphabit[y]] = value;
+            }
+            decimal prev = 0;
+            m = 0;
+            bool endResult = false;
+            bool firstone = true;
+            List<char> tempList = new List<char>();
+            finstroka += '\0';
+            bool isFunc = false;
+            while (!endResult)
+            {
+                switch (finstroka[m])
+                {
+                    case '+':
+                        if (firstone)
+                        {
+                            prev += VariableMean[tempList[tempList.Count-1]] + VariableMean[tempList[tempList.Count-2]];
+                            tempList.RemoveAt(tempList.Count-1);
+                            tempList.RemoveAt(tempList.Count-1);
+                        }
+                        else
+                        {
+                            prev += VariableMean[tempList[tempList.Count-1]];
+                        }
+                        firstone = false;
+                        m++;
+                        break;
+                    case '-':
+                        if (firstone)
+                        {
+                            prev += VariableMean[tempList[tempList.Count - 1]] - VariableMean[tempList[tempList.Count - 2]];
+                            tempList.RemoveAt(tempList.Count - 1);
+                            tempList.RemoveAt(tempList.Count - 1);
+                        }
+                        else
+                        {
+                            prev -= VariableMean[tempList[tempList.Count - 1]];
+                            tempList.RemoveAt(tempList.Count - 1);
+                        }
+                        firstone = false;
+                        m++;
+                        break;
+                    case '*':
+                        if (firstone)
+                        {
+                            prev += VariableMean[tempList[tempList.Count - 1]] * VariableMean[tempList[tempList.Count - 2]];
+                            tempList.RemoveAt(tempList.Count - 1);
+                            tempList.RemoveAt(tempList.Count - 1);
+                        }
+                        else
+                        {
+                            prev *= VariableMean[tempList[tempList.Count - 1]];
+                            tempList.RemoveAt(tempList.Count - 1);
+                        }
+                        firstone = false;
+                        m++;
+                        break;
+                    case '/':
+                        if (firstone)
+                        {
+                            prev += VariableMean[tempList[tempList.Count - 1]] / VariableMean[tempList[tempList.Count - 2]];
+                            tempList.RemoveAt(tempList.Count - 1);
+                            tempList.RemoveAt(tempList.Count - 1);
+                        }
+                        else
+                        {
+                            prev /= VariableMean[tempList[tempList.Count - 1]];
+                            tempList.RemoveAt(tempList.Count - 1);
+                        }
+                        firstone = false;
+                        m++;
+                        break;
+
+                    case '\0':
+                        endResult = true;
+                        break;
+                    default:
+                        isFunc = false;
+                        for (int g=0;g< functionChar.Length;g++)
+                        {
+                            if (finstroka[m] == functionChar[g][0])
+                            {
+                                switch (functionChar[g][0])
+                                {
+                                    case 'A':
+                                        break;
+                                    case 'C':
+                                        break;
+                                    case 'S':
+                                        prev+=(decimal)sin((double)VariableMean[tempList[tempList.Count - 1]]);
+                                        tempList.RemoveAt(tempList.Count - 1);
+                                        isFunc = true;
+                                        firstone = false;
+                                        break;
+                                    case 'T':
+                                        break;
+                                }
+                            }
+                        }
+                        if(!isFunc)
+                            tempList.Add(finstroka[m]);
+                        m++;                        
+                        break;
+                }
+            }
+            return prev.ToString();
+        }
+        public void GeneralForm(string strok, bool step)
         {
             if(end)
             finstroka = "";
@@ -146,20 +284,12 @@ namespace Modelirovanie
                         m++;
                         break;
                     case 4:
-                        //Баг, надо подправить (при замене имен функций одна и та же может замениться несколько раз)
-                        foreach (KeyValuePair<string, string> kvp in FunctionMean)
-                        {
-                            if (finstroka.Contains(kvp.Value))
-                            {
-                                finstroka = finstroka.Replace(kvp.Value, kvp.Key.ToUpper());
-                            }
-                        }
+
                         end = true;
                         pntr = -1;
                         stroka = "";
                         m = 0;
                         alreadyConverted = true;
-                        //finstroka = "";
                         break;
                     case 5:
                         finstroka = "Ошибка скобочной структуры";
@@ -190,60 +320,16 @@ namespace Modelirovanie
         }
         public void convertation(string strok)
         {
-            bool isFunc = false;
             foreach (KeyValuePair<string, string> kvp in FunctionMean)
             {
                 if (strok.Contains(kvp.Key))
                 {
-                    strok = strok.Replace(kvp.Key, kvp.Value);
+                    strok= strok.Replace(kvp.Key, kvp.Value);
                 }
             }
-            strok += '\0';
-            for (int i = 0; i < strok.Length; i++)
-            {
-                isFunc = false;
-                if (strok[i] == '+' || strok[i] == '-' || strok[i] == '*' || strok[i] == '/' || strok[i] == '^' || strok[i] == '(' || strok[i] == ')' || strok[i] == '\0')
-                {
-                    if (strok[i] != '(' && strok[i] != '\0' && strok[i - 1] != ')')
-                    {
-                        stroka += alphabit[num2];
-                        num2++;
-                    }
-                    if (strok[i] == '\0' && strok[i - 1] != ')')
-                    {
-                        stroka += alphabit[num2];
-                    }
-                    stroka += strok[i];
-                    
-                }
-                else
-                {
-                    int j = 0;
-                    while (j < functionChar.Length)
-                    {
-                        if (strok[i] == functionChar[j][0])
-                        {
-                            stroka += strok[i];
-                            isFunc = true;
-                            break;
-                        }
-                        j++;
-                    }
-                    if (!isFunc)
-                    {
-                        if (VariableMean[alphabit[num2]] == 0)
-                        {
-                            VariableMean[alphabit[num2]] += (int)strok[i];
-                        }
-                        else
-                        {
-                            VariableMean[alphabit[num2]] = (VariableMean[alphabit[num2]] * num) + (int)strok[i];
-                        }
-                    }
-
-                }
-            }
-            tempString = stroka;
+            stroka+= strok+'\0';
+            
+            tempString = stroka; 
             foreach (KeyValuePair<string, string> kvp in FunctionMean)
             {
                 if (tempString.Contains(kvp.Value))
